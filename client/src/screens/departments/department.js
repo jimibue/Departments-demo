@@ -18,11 +18,27 @@ export default function Department(props) {
       });
   }, []);
 
+  async function deleteItem(id) {
+    console.log(id);
+    const res = await Axios.delete(
+      `/api/departments/${department.id}/items/${id}`
+    );
+    const filteredItems = items.filter((i) => i.id !== res.data.id);
+    setItems(filteredItems);
+  }
+
   function renderItems() {
     return items.map((i) => (
-      <div>
-        <h1>{i.name}</h1>
+      <div
+        style={{
+          marginBottom: "10px",
+          padding: "10px",
+          border: "1px solid #777",
+        }}
+      >
+        <h6 style={{ margin: 0 }}>{i.name}</h6>
         <p>{i.price}</p>
+        <button onClick={() => deleteItem(i.id)}>delete</button>
       </div>
     ));
   }
