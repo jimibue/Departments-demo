@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Axios from "axios";
+import ItemForm from "./itemForm";
 
 export default function Department(props) {
   const [department, setDepartment] = useState({});
@@ -26,6 +27,15 @@ export default function Department(props) {
     const filteredItems = items.filter((i) => i.id !== res.data.id);
     setItems(filteredItems);
   }
+  function handleAdd(itemObj) {
+    // add stuff
+    console.log("handleAdd called");
+    setItems([itemObj, ...items]);
+  }
+  function handleEdit() {
+    // add stuff
+    console.log("handleEdit called");
+  }
 
   function renderItems() {
     return items.map((i) => (
@@ -39,12 +49,14 @@ export default function Department(props) {
         <h6 style={{ margin: 0 }}>{i.name}</h6>
         <p>{i.price}</p>
         <button onClick={() => deleteItem(i.id)}>delete</button>
+        <ItemForm did={department.id} edit={handleEdit} {...i} />
       </div>
     ));
   }
   return (
     <div>
       <h1>{department.name}</h1>
+      <ItemForm did={department.id} add={handleAdd} />
       {props.match.params.id} - {department.id}
       <div onClick={props.history.goBack}>go back</div>
       {renderItems()}
